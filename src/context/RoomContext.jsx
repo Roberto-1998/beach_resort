@@ -38,13 +38,23 @@ const RoomProvider = ({ children }) => {
     return tempItems;
   };
 
-  return <RoomContext.Provider value={{ rooms, featuredRooms, sortedRooms, loading }}>{children}</RoomContext.Provider>;
+  const getRoom = (slug) => {
+    let tempRooms = [...rooms];
+    const room = tempRooms.find((room) => room.slug === slug);
+    return room;
+  };
+
+  return (
+    <RoomContext.Provider value={{ rooms, featuredRooms, sortedRooms, loading, getRoom }}>
+      {children}
+    </RoomContext.Provider>
+  );
 };
 
 export const useRoomsData = () => {
-  const { rooms, featuredRooms, sortedRooms, loading } = useContext(RoomContext);
+  const { rooms, featuredRooms, sortedRooms, loading, getRoom } = useContext(RoomContext);
 
-  return { rooms, featuredRooms, sortedRooms, loading };
+  return { rooms, featuredRooms, sortedRooms, loading, getRoom };
 };
 
 export default RoomProvider;
